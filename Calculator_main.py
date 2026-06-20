@@ -83,24 +83,30 @@ def AI():
                     load.append(i)
                 else:
                     continue
-            if(load in [['interest','calculator'],['interest','calc'],['interest','cal'],['interest','library'],['interest','lib'],['interest']]):
-                from Interest_calc_calc.py import Interest
-                i=Interest()
-                i.calc_Interest()
-            elif(load in [['calculator','calc'],['calculator','cal'],['multiply'],['add'],['subtract'],['divide'],['modulus'],['remainder'],['addition'],['subtraction'],['multiplication'],['division'],['calculator']]):
-            elif(load in [['grocery','calculator'],['grocery','calc'],['grocery','cal'],['grocery'],['supermarket'],['shopping','list'],['shopping'],['grocery','list']]):
-                from Grocery_calc import Grocery
-                g=Grocery()
-                g.calc_grocery()
-            elif(load in [['multiplication','table'],['multiplication','tfunc'],['multiplication'],['series'],['multiplication','series']]):
-                from Multiplication_table.py import Multiplication
-                m=Multiplication()
-                m.calc_Multiplication_table()
-            elif(load in [['physics','calculator'],['physics'],['displacement'],['speed'],['average','speed'],['velocity'],['angular','velocity'],['angle'],['angle','projection'],['projection'],['time','interval'],['time'],['acceleration']]):
-                from Physics_calc import Physics
-                p=Physics()
-                p.calc_Physics()
-            else:
+        filtering()
+        if(load in [['interest','calculator'],['interest','calc'],['interest','cal'],['interest','library'],['interest','lib'],['interest']]):
+            from Interest_calc_calc.py import Interest
+            i=Interest()
+            i.calc_Interest()
+        elif(load in [['calculator','calc'],['calculator','cal'],['multiply'],['add'],['subtract'],['divide'],['modulus'],['remainder'],['addition'],['subtraction'],['multiplication'],['division'],['calculator']]):
+            from Simple_Calculator.py import Calculator
+            c=Calculator()
+            c.calc_Simple()
+        elif(load in [['grocery','calculator'],['grocery','calc'],['grocery','cal'],['grocery'],['supermarket'],['shopping','list'],['shopping'],['grocery','list']]):
+            from Grocery_calc import Grocery
+            g=Grocery()
+            g.calc_grocery()
+        elif(load in [['multiplication','table'],['multiplication','tfunc'],['multiplication'],['series'],['multiplication','series']]):
+            from Multiplication_table.py import Multiplication
+            m=Multiplication()
+            m.calc_Multiplication_table()
+        elif(load in [['physics','calculator'],['physics'],['displacement'],['speed'],['average','speed'],['velocity'],['angular','velocity'],['angle'],['angle','projection'],['projection'],['time','interval'],['time'],['acceleration']]):
+            from Physics_calc import Physics
+            p=Physics()
+            p.calc_Physics()
+        elif(load in [['exit'],['quit'],['get','out'],['close']]:
+            exit
+        else:
             print("Error!")
             for i in range(0,101):
                     print(f"\rReturning:{i}%",end="",flush=True)
