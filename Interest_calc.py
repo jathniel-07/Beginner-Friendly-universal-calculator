@@ -40,5 +40,6 @@ class Interest:
                 rates(d, e, f)
                 display()
             if asking=="X":
-                exit
+                print("\nEXITING")
+                continue
         display()
