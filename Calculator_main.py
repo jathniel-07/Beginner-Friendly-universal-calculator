@@ -83,3 +83,19 @@ def AI():
                     load.append(i)
                 else:
                     continue
+            if(load in [['interest','calculator'],['interest','calc'],['interest','cal'],['interest','library'],['interest','lib'],['interest']]):
+            elif(load in [['calculator','calc'],['calculator','cal'],['multiply'],['add'],['subtract'],['divide'],['modulus'],['remainder'],['addition'],['subtraction'],['multiplication'],['division'],['calculator']]):
+            elif(load in [['grocery','calculator'],['grocery','calc'],['grocery','cal'],['grocery'],['supermarket'],['shopping','list'],['shopping'],['grocery','list']]):     
+            elif(load in [['multiplication','table'],['multiplication','tfunc'],['multiplication'],['series'],['multiplication','series']]):
+            elif(load in [['physics','calculator'],['physics'],['displacement'],['speed'],['average','speed'],['velocity'],['angular','velocity'],['angle'],['angle','projection'],['projection'],['time','interval'],['time'],['acceleration']]):
+            else:
+            print("Error!")
+            for i in range(0,101):
+                    print(f"\rReturning:{i}%",end="",flush=True)
+                    time.sleep(0.03)
+            searching()
+
+            
+    searching()  
+load_screen()
+AI()
