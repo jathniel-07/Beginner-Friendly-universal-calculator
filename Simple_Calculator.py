@@ -53,5 +53,5 @@ class Calculator:
                 display()
             if asking == "E":
                 print("\nEXITING...")
-                continue
+                exit
         display()
