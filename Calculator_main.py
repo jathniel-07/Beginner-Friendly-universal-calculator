@@ -88,22 +88,27 @@ def AI():
             from Interest_calc_calc.py import Interest
             i=Interest()
             i.calc_Interest()
+            searching()
         elif(load in [['calculator','calc'],['calculator','cal'],['multiply'],['add'],['subtract'],['divide'],['modulus'],['remainder'],['addition'],['subtraction'],['multiplication'],['division'],['calculator']]):
             from Simple_Calculator.py import Calculator
             c=Calculator()
             c.calc_Simple()
+            searching()
         elif(load in [['grocery','calculator'],['grocery','calc'],['grocery','cal'],['grocery'],['supermarket'],['shopping','list'],['shopping'],['grocery','list']]):
             from Grocery_calc import Grocery
             g=Grocery()
             g.calc_grocery()
+            searching()
         elif(load in [['multiplication','table'],['multiplication','tfunc'],['multiplication'],['series'],['multiplication','series']]):
             from Multiplication_table.py import Multiplication
             m=Multiplication()
             m.calc_Multiplication_table()
+            searching()
         elif(load in [['physics','calculator'],['physics'],['displacement'],['speed'],['average','speed'],['velocity'],['angular','velocity'],['angle'],['angle','projection'],['projection'],['time','interval'],['time'],['acceleration']]):
             from Physics_calc import Physics
             p=Physics()
             p.calc_Physics()
+            searching()
         elif(load in [['exit'],['quit'],['get','out'],['close']]:
             exit
         else:
