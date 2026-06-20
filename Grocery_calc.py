@@ -20,5 +20,3 @@ class Grocery:
         for i in complete_msg:
             print(i,end="",flush=True)
             time.sleep(0.01)
-g=Grocery()
-g.calc_grocery()
