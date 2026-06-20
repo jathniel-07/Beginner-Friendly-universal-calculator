@@ -85,7 +85,7 @@ def AI():
                     continue
         filtering()
         if(load in [['interest','calculator'],['interest','calc'],['interest','cal'],['interest','library'],['interest','lib'],['interest']]):
-            from Interest_calc_calc import Interest
+            from Interest_calc import Interest
             i=Interest()
             i.calc_Interest()
             searching()
