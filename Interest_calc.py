@@ -41,5 +41,5 @@ class Interest:
                 display()
             if asking=="X":
                 print("\nEXITING")
-                continue
+                exit
         display()
