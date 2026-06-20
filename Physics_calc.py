@@ -150,7 +150,7 @@ sec(ø)  ={sec}""")
                 display()
             elif(ans in e):
                 print("Leaving..................")
-                continue
+                exit
             else:
                 print("INVALID ARGUEMENT")
                 display()
