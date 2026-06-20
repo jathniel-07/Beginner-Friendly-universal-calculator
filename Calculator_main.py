@@ -63,6 +63,7 @@ def AI():
         asking="JATH:WHAT DO YOU LIKE TO ACCESS ?:"
         for i in asking:
             print(i,end=" ",flush=True)
+            time.sleep(0.02)
         giving=str(input())
         print("\n")
         cgiving=giving.lower()
