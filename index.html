@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WELCOME TO UNIVERSAL CALCULATOR</title>
+    <title>Universal Calculator | PyScript Terminal</title>
     
-    <!-- Load PyScript -->
-    <script src="mini-coi.js"></script>   
+    <!-- 1. PROFESSIONAL FONTS & ICONS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- 2. PYSCRIPT CORE -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
-    <!-- Configure PyScript to fetch your local files -->
+    <!-- 3. MINI-COI FIX (Embedded for simplicity) -->
+    <!-- This solves the SharedArrayBuffer error on GitHub Pages automatically -->
+    <script src="mini-coi.js" scope="./"></script>
+
+    <!-- 4. CONFIGURATION: Fetch your 5 Python files -->
     <script type="py" config>
         {
             "fetch": [
@@ -24,18 +31,163 @@
                         "./Multiplication_table.py"
                     ]
                 }
-            ]
+            ],
+            "packages": ["micropip"]
         }
     </script>
+
+    <!-- 5. PROFESSIONAL CSS STYLING -->
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --terminal-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-color: #e2e8f0;
+            --header-bg: rgba(30, 41, 59, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Professional Header */
+        header {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            letter-spacing: -0.5px;
+        }
+
+        .status-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Terminal Container */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .terminal-wrapper {
+            background: var(--terminal-bg);
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-header {
+            background: rgba(0,0,0,0.2);
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ef4444; }
+        .yellow { background: #f59e0b; }
+        .green { background: #10b981; }
+        .title { margin-left: 1rem; font-size: 0.875rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+
+        /* PyScript Terminal Styling Override */
+        py-terminal {
+            flex: 1;
+            background: transparent !important;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            overflow-y: auto;
+            color: #e2e8f0;
+        }
+
+        /* Loading Spinner */
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-left-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* Hide loader when PyScript is ready */
+        py-terminal[ready] + #loader,
+        py-terminal[ready] ~ .terminal-wrapper #loader { display: none; }
+    </style>
 </head>
 <body>
-    <h1>Calculator Terminal</h1>
-    
-    <!-- 
-      1. src="./Calculator_main.py": Runs your main file.
-      2. terminal: Creates the black terminal look.
-      3. worker: Allows input() without freezing the page.
-    -->
-    <script type="py" src="./Calculator_main.py" terminal worker></script>
+
+    <header>
+        <h1>Universal Calculator</h1>
+        <div class="status-badge">Python Environment Active</div>
+    </header>
+
+    <main>
+        <div class="terminal-wrapper">
+            <div class="terminal-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <div class="title">user@universal-calc:~</div>
+            </div>
+            
+            <!-- Loader -->
+            <div id="loader">
+                <div class="spinner"></div>
+                <p>Initializing Python Engine...</p>
+            </div>
+
+            <!-- The Terminal -->
+            <!-- 'worker' enables input(), 'terminal' gives the UI -->
+            <script type="py" src="./Calculator_main.py" terminal worker></script>
+        </div>
+    </main>
+
 </body>
 </html>   
