@@ -84,6 +84,9 @@ def AI():
                 else:
                     continue
             if(load in [['interest','calculator'],['interest','calc'],['interest','cal'],['interest','library'],['interest','lib'],['interest']]):
+                from Grocery_calc.py import Grocery
+                g=Grocery()
+                g.calc_grocery()
             elif(load in [['calculator','calc'],['calculator','cal'],['multiply'],['add'],['subtract'],['divide'],['modulus'],['remainder'],['addition'],['subtraction'],['multiplication'],['division'],['calculator']]):
             elif(load in [['grocery','calculator'],['grocery','calc'],['grocery','cal'],['grocery'],['supermarket'],['shopping','list'],['shopping'],['grocery','list']]):     
             elif(load in [['multiplication','table'],['multiplication','tfunc'],['multiplication'],['series'],['multiplication','series']]):
