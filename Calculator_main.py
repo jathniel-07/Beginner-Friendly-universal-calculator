@@ -30,7 +30,7 @@ def load_screen():
         time.sleep(0.1)
     print("\n")
     functions_ex="""
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 (THIS PROGRAM IS CASE INSENSITIVE)
 (CONVERSATION IS PERMITTED RATHER THAN ONLY KEYWORDS)
 (EXPLAIN YOU NEED AS SIMPLE AS POSSIBLE)
@@ -43,7 +43,7 @@ LIST OF LIBRARIES:
 4.MULTIPLICATION TABLE => Multiplication Table for printing the multiplication table of any number
 5.PHYSICS CALCULATOR   => Physics calculator for all physics values to be found (It's a large library)
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"""
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"""
     for i in functions_ex:
         print(i,end="",flush=True)
         time.sleep(0.008)
@@ -60,11 +60,7 @@ def AI():
         time.sleep(0.01)
     def searching():
         print("\n")
-        asking="JATH:WHAT DO YOU LIKE TO ACCESS ?:"
-        for i in asking:
-            print(i,end=" ",flush=True)
-            time.sleep(0.02)
-        giving=str(input())
+        giving=str(input("JATH:WHAT DO YOU LIKE TO ACCESS ?:"))
         print("\n")
         cgiving=giving.lower()
         load_i=[]
