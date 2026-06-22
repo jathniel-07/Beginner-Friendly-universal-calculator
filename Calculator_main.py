@@ -32,7 +32,7 @@ LIST OF LIBRARIES:
     for i in functions_ex:
         print(i,end="",flush=True)
         time.sleep(0.008)
-    pd=str(input("\nPROCEED ?(Yes => y || No => n):"))
+    pd=str(input("PROCEED ?(Yes => y || No => n):"))
     if pd=="y":
         for i in range(0,101):
             print(f"\rLOADING LIBRARIES:{i}%",end="",flush=True)
