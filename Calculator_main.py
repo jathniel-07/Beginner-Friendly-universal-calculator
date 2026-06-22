@@ -13,21 +13,25 @@ def load_screen():
     print("\n")
     functions_ex="""
 
-
-    
-(THIS PROGRAM IS CASE INSENSITIVE)
-(CONVERSATION IS PERMITTED RATHER THAN ONLY KEYWORDS)
-(EXPLAIN YOU NEED AS SIMPLE AS POSSIBLE)
-
-LIST OF LIBRARIES:
-
+------------------------------------------------------------------------------------------------------------------------------------
+                                                                                                                                    
+(THIS PROGRAM IS CASE INSENSITIVE)                                                                                                  
+(CONVERSATION IS PERMITTED RATHER THAN ONLY KEYWORDS)                                                                               
+(EXPLAIN YOU NEED AS SIMPLE AS POSSIBLE)                                                                                            
+                                                                                                                                    
+LIST OF LIBRARIES:                                                                                                                  
+                                                                                                                                    
 1.INTEREST CALCULATOR  => Interest Calculator to calculate interest(I),rate of interest(r),princpal amount(P) and number of years(n)
-2.SIMPLE CALCULATOR    => Simple Calculator for basic Arithmetic operations
-3.GROCERY CALCULATOR   => Grocery Calculator for calculating the total cost and cost of each grocery things
-4.MULTIPLICATION TABLE => Multiplication Table for printing the multiplication table of any number
-5.PHYSICS CALCULATOR   => Physics calculator for all physics values to be found (It's a large library)
-
-
+                                                                                                                                    
+2.SIMPLE CALCULATOR    => Simple Calculator for basic Arithmetic operations                                                         
+                                                                                                                                    
+3.GROCERY CALCULATOR   => Grocery Calculator for calculating the total cost and cost of each grocery things                         
+                                                                                                                                    
+4.MULTIPLICATION TABLE => Multiplication Table for printing the multiplication table of any number                                  
+                                                                                                                                    
+5.PHYSICS CALCULATOR   => Physics calculator for all physics values to be found (It's a large library)                              
+                                                                                                                                      
+------------------------------------------------------------------------------------------------------------------------------------
 """
     for i in functions_ex:
         print(i,end="",flush=True)
