@@ -52,20 +52,17 @@
             position: relative;
         }
 
-        /* TERMINAL CONTAINER */
         .terminal-wrapper {
             width: 95vw;
             height: 95vh;
             background: var(--terminal-bg);
             border: 1px solid var(--border-color);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
+            display: none; /* Hidden by default */
             flex-direction: column;
             border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s ease;
-            /* Initially hidden until Start is pressed */
-            display: none; 
         }
 
         .terminal-wrapper.visible {
@@ -104,7 +101,6 @@
             border-bottom: 2px solid var(--accent-color);
         }
 
-        /* START BUTTON STYLING */
         #start-btn {
             background-color: var(--accent-color);
             color: white;
@@ -126,14 +122,13 @@
         #start-btn:disabled {
             background-color: #555;
             cursor: not-allowed;
+            opacity: 0.5;
         }
 
-        /* TERMINAL OUTPUT */
         py-terminal {
             flex: 1;
             padding: 1rem;
             font-family: 'JetBrains Mono', monospace;
-            /* Dynamic Font Size: Scales aggressively on small screens */
             font-size: calc(10px + 1.5vmin); 
             line-height: 1.4;
             overflow-y: auto;
@@ -143,7 +138,6 @@
             box-sizing: border-box;
         }
 
-        /* LOADER STYLING */
         #loader {
             position: absolute;
             top: 50%;
@@ -155,6 +149,7 @@
             pointer-events: none;
             z-index: 10;
             text-align: center;
+            transition: opacity 0.5s ease;
         }
 
         /* MOBILE OPTIMIZATIONS */
@@ -169,28 +164,25 @@
                 font-size: 0.7rem;
             }
 
-            /* PORTRAIT MODE: Half Height & Centered */
             @media screen and (orientation: portrait) {
                 .terminal-wrapper.visible {
                     width: 90vw;
-                    height: 50vh; /* Half height */
+                    height: 50vh;
                     position: absolute;
                     top: 50%;
                     left: 50%;
-                    transform: translate(-50%, -50%); /* Perfect Center */
+                    transform: translate(-50%, -50%);
                     border-radius: 12px;
                     box-shadow: 0 15px 40px rgba(0,0,0,0.6);
                     border: 1px solid #444;
                 }
 
                 py-terminal {
-                    /* Smaller font for portrait to fit content */
                     font-size: calc(9px + 1.2vmin); 
                     padding: 0.5rem;
                 }
             }
 
-            /* LANDSCAPE MODE: Full Width but constrained height if needed */
             @media screen and (orientation: landscape) {
                 .terminal-wrapper.visible {
                     width: 95vw;
@@ -213,58 +205,66 @@
     <!-- Loader -->
     <div id="loader">
         <div>AI LOADING...</div>
-        <div style="font-size: 0.8em; margin-top:5px; color:#555;">(Wait for Start Button)</div>
+        <div style="font-size: 0.8em; margin-top:5px; color:#555;">Initializing Engine</div>
     </div>
 
-    <!-- Terminal Container (Hidden by default) -->
+    <!-- Terminal Container -->
     <div class="terminal-wrapper" id="terminal-container">
         <div class="terminal-header">
             <div class="header-left">
                 <span class="active">Terminal</span>
                 <span style="color: #666;">JATH.AI</span>
             </div>
-            <!-- Start Button -->
-            <button id="start-btn">Start Execution</button>
+            <button id="start-btn" disabled>Wait...</button>
         </div>
         
-        <!-- The terminal script. 'auto-generate' is removed to control output manually if needed, 
-             but keeping default behavior for now. -->
         <script type="py" src="./Calculator_main.py" terminal worker></script>
     </div>
 
     <script>
-        // 1. Hide Loader when PyScript is Ready
+        const loader = document.getElementById('loader');
+        const startBtn = document.getElementById('start-btn');
+        const terminal = document.getElementById('terminal-container');
+        let isReady = false;
+
+        // Method 1: Try py-ready event
         document.addEventListener("py-ready", () => {
-            const loader = document.getElementById('loader');
-            const startBtn = document.getElementById('start-btn');
-            
+            console.log("py-ready event fired");
+            enableInterface();
+        });
+
+        // Method 2: Intercept Console Log (More Reliable for Workers)
+        // PyScript logs "PyScript page fully initialized" when done
+        const originalConsoleLog = console.log;
+        console.log = function(message) {
+            originalConsoleLog.apply(console, arguments);
+            if (message && message.toString().includes("PyScript page fully initialized")) {
+                console.log("PyScript initialization detected via console log");
+                enableInterface();
+            }
+        };
+
+        function enableInterface() {
+            if (isReady) return; // Prevent double firing
+            isReady = true;
+
             // Fade out loader
             loader.style.opacity = '0';
-            loader.style.transition = 'opacity 0.5s';
             
             // Enable start button
             startBtn.disabled = false;
             startBtn.textContent = "Start Execution";
             
-            // Optional: Remove loader from DOM after fade
+            // Remove loader from DOM after fade
             setTimeout(() => {
                 loader.style.display = 'none';
             }, 500);
-        });
+        }
 
-        // 2. Handle Start Button Click
-        document.getElementById('start-btn').addEventListener('click', function() {
-            const terminal = document.getElementById('terminal-container');
-            const btn = this;
-
-            // Show terminal
+        // Start Button Click Handler
+        startBtn.addEventListener('click', function() {
             terminal.classList.add('visible');
-            
-            // Hide the button after clicking (optional, remove if you want it toggleable)
-            btn.style.display = 'none';
-            
-            // Focus the terminal if possible
-            // Note: PyScript terminal auto-focuses usually, but this ensures UI flow
+            this.style.display = 'none'; // Hide button after start
         });
     </script>
 </body>
