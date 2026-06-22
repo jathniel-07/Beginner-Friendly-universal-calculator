@@ -52,10 +52,7 @@
             position: relative;
         }
 
-        /* 
-           RESPONSIVE TERMINAL CONTAINER 
-           Defaults to desktop, overridden by mobile queries below 
-        */
+        /* TERMINAL CONTAINER */
         .terminal-wrapper {
             width: 95vw;
             height: 95vh;
@@ -67,13 +64,20 @@
             border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s ease;
+            /* Initially hidden until Start is pressed */
+            display: none; 
+        }
+
+        .terminal-wrapper.visible {
+            display: flex;
         }
 
         .terminal-header {
-            height: 35px;
+            height: 40px;
             background: #252526;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 0 1rem;
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -81,31 +85,56 @@
             color: #969696;
             border-bottom: 1px solid #333;
             user-select: none;
-            flex-shrink: 0; /* Prevent header from shrinking */
+            flex-shrink: 0;
         }
 
-        .terminal-header span {
-            margin-right: 1.5rem;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-left span {
             cursor: pointer;
             padding-bottom: 8px;
         }
         
-        .terminal-header span.active {
+        .header-left span.active {
             color: #ffffff;
             border-bottom: 2px solid var(--accent-color);
         }
 
-        /* 
-           DYNAMIC FONT SIZING 
-           Uses 'vmin' to scale font based on the smallest screen dimension.
-           This ensures text is readable in landscape but shrinks safely in portrait.
-        */
+        /* START BUTTON STYLING */
+        #start-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.2s;
+        }
+
+        #start-btn:hover {
+            background-color: #005f9e;
+        }
+
+        #start-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        /* TERMINAL OUTPUT */
         py-terminal {
             flex: 1;
             padding: 1rem;
             font-family: 'JetBrains Mono', monospace;
-            /* Base size 14px, scales up/down with screen size */
-            font-size: calc(12px + 0.8vmin); 
+            /* Dynamic Font Size: Scales aggressively on small screens */
+            font-size: calc(10px + 1.5vmin); 
             line-height: 1.4;
             overflow-y: auto;
             color: #cccccc;
@@ -114,6 +143,7 @@
             box-sizing: border-box;
         }
 
+        /* LOADER STYLING */
         #loader {
             position: absolute;
             top: 50%;
@@ -124,47 +154,55 @@
             font-size: 1rem;
             pointer-events: none;
             z-index: 10;
+            text-align: center;
         }
 
-        /* 
-           MOBILE OPTIMIZATIONS (Both Portrait & Landscape) 
-           Targets devices with max-width of 768px (typical tablets/phones)
-        */
+        /* MOBILE OPTIMIZATIONS */
         @media screen and (max-width: 768px) {
-            .terminal-wrapper {
-                width: 100vw;
-                height: 100vh;
-                border: none;
-                border-radius: 0;
-                box-shadow: none;
-            }
-
-            /* Reduce header height slightly on mobile */
             .terminal-header {
-                height: 30px;
+                height: 35px;
                 font-size: 0.7rem;
             }
 
-            /* 
-               PORTRAIT SPECIFIC TWEAKS 
-               Further reduces padding to maximize vertical space for code output 
-            */
+            #start-btn {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+            }
+
+            /* PORTRAIT MODE: Half Height & Centered */
             @media screen and (orientation: portrait) {
+                .terminal-wrapper.visible {
+                    width: 90vw;
+                    height: 50vh; /* Half height */
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%); /* Perfect Center */
+                    border-radius: 12px;
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+                    border: 1px solid #444;
+                }
+
                 py-terminal {
-                    padding: 0.5rem; /* Minimal padding */
-                    /* Font scales down more aggressively in portrait */
-                    font-size: calc(10px + 1.2vmin); 
+                    /* Smaller font for portrait to fit content */
+                    font-size: calc(9px + 1.2vmin); 
+                    padding: 0.5rem;
                 }
             }
 
-            /* 
-               LANDSCAPE SPECIFIC TWEAKS 
-               Comfortable padding and slightly larger font 
-            */
+            /* LANDSCAPE MODE: Full Width but constrained height if needed */
             @media screen and (orientation: landscape) {
+                .terminal-wrapper.visible {
+                    width: 95vw;
+                    height: 85vh;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+                
                 py-terminal {
-                    padding: 1rem;
-                    font-size: calc(12px + 0.8vmin);
+                    font-size: calc(11px + 0.8vmin);
                 }
             }
         }
@@ -172,16 +210,62 @@
 </head>
 <body>
 
-    <div class="terminal-wrapper">
+    <!-- Loader -->
+    <div id="loader">
+        <div>AI LOADING...</div>
+        <div style="font-size: 0.8em; margin-top:5px; color:#555;">(Wait for Start Button)</div>
+    </div>
+
+    <!-- Terminal Container (Hidden by default) -->
+    <div class="terminal-wrapper" id="terminal-container">
         <div class="terminal-header">
-            <span class="active">Terminal</span>
-            <span style="margin-left: auto; color: #666;">JATH.AI</span>
+            <div class="header-left">
+                <span class="active">Terminal</span>
+                <span style="color: #666;">JATH.AI</span>
+            </div>
+            <!-- Start Button -->
+            <button id="start-btn">Start Execution</button>
         </div>
         
-        <div id="loader">AI LOADING......</div>
-        
+        <!-- The terminal script. 'auto-generate' is removed to control output manually if needed, 
+             but keeping default behavior for now. -->
         <script type="py" src="./Calculator_main.py" terminal worker></script>
     </div>
 
+    <script>
+        // 1. Hide Loader when PyScript is Ready
+        document.addEventListener("py-ready", () => {
+            const loader = document.getElementById('loader');
+            const startBtn = document.getElementById('start-btn');
+            
+            // Fade out loader
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.5s';
+            
+            // Enable start button
+            startBtn.disabled = false;
+            startBtn.textContent = "Start Execution";
+            
+            // Optional: Remove loader from DOM after fade
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        });
+
+        // 2. Handle Start Button Click
+        document.getElementById('start-btn').addEventListener('click', function() {
+            const terminal = document.getElementById('terminal-container');
+            const btn = this;
+
+            // Show terminal
+            terminal.classList.add('visible');
+            
+            // Hide the button after clicking (optional, remove if you want it toggleable)
+            btn.style.display = 'none';
+            
+            // Focus the terminal if possible
+            // Note: PyScript terminal auto-focuses usually, but this ensures UI flow
+        });
+    </script>
 </body>
 </html>   
