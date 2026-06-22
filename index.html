@@ -53,53 +53,9 @@
         }
 
         /* 
-           PORTRAIT MODE WARNING 
-           Only shows the overlay. Does NOT hide the terminal wrapper 
-           to prevent rendering glitches on rotation.
+           RESPONSIVE TERMINAL CONTAINER 
+           Defaults to desktop, overridden by mobile queries below 
         */
-        @media screen and (orientation: portrait) {
-            body::before {
-                content: "Please rotate your device to landscape mode.";
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0, 0, 0, 0.95);
-                color: #fff;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-                font-family: 'Inter', sans-serif;
-                font-size: 18px;
-                text-align: center;
-                padding: 20px;
-                backdrop-filter: blur(5px);
-            }
-            /* Dim the terminal behind the message */
-            .terminal-wrapper {
-                filter: blur(4px);
-                pointer-events: none;
-            }
-        }
-
-        /* LANDSCAPE MODE OPTIMIZATION */
-        @media screen and (orientation: landscape) {
-            body::before {
-                display: none; /* Hide warning */
-            }
-            
-            .terminal-wrapper {
-                width: 100vw;  /* Full width */
-                height: 100vh; /* Full height */
-                border-radius: 0; /* Remove rounded corners for full immersion */
-                border: none;
-            }
-
-            py-terminal {
-                font-size: 16px; /* Slightly larger text for mobile readability */
-            }
-        }
-
-        /* Default Desktop/Tablet Style */
         .terminal-wrapper {
             width: 95vw;
             height: 95vh;
@@ -125,6 +81,7 @@
             color: #969696;
             border-bottom: 1px solid #333;
             user-select: none;
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
 
         .terminal-header span {
@@ -138,15 +95,23 @@
             border-bottom: 2px solid var(--accent-color);
         }
 
+        /* 
+           DYNAMIC FONT SIZING 
+           Uses 'vmin' to scale font based on the smallest screen dimension.
+           This ensures text is readable in landscape but shrinks safely in portrait.
+        */
         py-terminal {
             flex: 1;
             padding: 1rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
+            /* Base size 14px, scales up/down with screen size */
+            font-size: calc(12px + 0.8vmin); 
+            line-height: 1.4;
             overflow-y: auto;
             color: #cccccc;
             background: transparent;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         #loader {
@@ -156,9 +121,52 @@
             transform: translate(-50%, -50%);
             color: #888;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 1rem;
             pointer-events: none;
             z-index: 10;
+        }
+
+        /* 
+           MOBILE OPTIMIZATIONS (Both Portrait & Landscape) 
+           Targets devices with max-width of 768px (typical tablets/phones)
+        */
+        @media screen and (max-width: 768px) {
+            .terminal-wrapper {
+                width: 100vw;
+                height: 100vh;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            /* Reduce header height slightly on mobile */
+            .terminal-header {
+                height: 30px;
+                font-size: 0.7rem;
+            }
+
+            /* 
+               PORTRAIT SPECIFIC TWEAKS 
+               Further reduces padding to maximize vertical space for code output 
+            */
+            @media screen and (orientation: portrait) {
+                py-terminal {
+                    padding: 0.5rem; /* Minimal padding */
+                    /* Font scales down more aggressively in portrait */
+                    font-size: calc(10px + 1.2vmin); 
+                }
+            }
+
+            /* 
+               LANDSCAPE SPECIFIC TWEAKS 
+               Comfortable padding and slightly larger font 
+            */
+            @media screen and (orientation: landscape) {
+                py-terminal {
+                    padding: 1rem;
+                    font-size: calc(12px + 0.8vmin);
+                }
+            }
         }
     </style>
 </head>
