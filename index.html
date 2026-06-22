@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI POWERED UNIVERSAL CALCULATOR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI  POWERED UNIVERSAL CALCULATOR</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,10 +13,11 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
-    <!-- Mini-COI Fix -->
+    <!-- Mini-COI Fix (Required for GitHub Pages) -->
     <script src="mini-coi.js" scope="./"></script>
 
-    <py-config>
+    <!-- Config: Fetch your 5 Python files -->
+   <py-config>
         [[fetch]]
         files = [
             "./Calculator_main.py",
@@ -29,6 +30,24 @@
     </py-config>
 
     <style>
+        @media (max-width: 768px) and (orientation: portrait) {
+    body::before {
+        content: "Please rotate your device to landscape mode.";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #000;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        font-family: 'Inter', sans-serif;
+        font-size: 18px;
+        text-align: center;
+        padding: 20px;
+    }
+    .terminal-wrapper { display: none; }
+}
         :root {
             --bg-color: #1e1e1e;
             --terminal-bg: #1e1e1e;
@@ -37,41 +56,44 @@
             --border-color: #333333;
         }
 
+        /* CENTERING MAGIC: Flexbox */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background-color: #0d0d0d;
+            background-color: #0d0d0d; /* Darker background for contrast */
             color: var(--text-color);
             height: 100vh;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex;             /* Enable Flexbox */
+            justify-content: center;   /* Center Horizontally */
+            align-items: center;       /* Center Vertically */
             overflow: hidden;
-            position: relative;
         }
 
-        /* TERMINAL CONTAINER - VISIBLE IMMEDIATELY */
+        /* VS Code Full Screen Terminal Dimensions */
         .terminal-wrapper {
-            width: 95vw;
-            height: 95vh;
+            /* 
+               To mimic VS Code "Full Screen" editor feel:
+               We give it a large fixed size or 90% of screen.
+               This makes it look like a focused window.
+            */
+            width: 95vw;  /* 90% of viewport width */
+            height: 95vh; /* 85% of viewport height */
+            
             background: var(--terminal-bg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; /* Changed from none to flex */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Deep shadow for floating effect */
+            display: flex;
             flex-direction: column;
-            border-radius: 8px;
+            border-radius: 8px; /* Slight rounding like modern editors */
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
         .terminal-header {
-            height: 40px;
+            height: 35px;
             background: #252526;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 0 1rem;
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -79,90 +101,56 @@
             color: #969696;
             border-bottom: 1px solid #333;
             user-select: none;
-            flex-shrink: 0;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .terminal-header span {
+            margin-right: 1.5rem;
+            cursor: pointer;
+            padding-bottom: 8px;
         }
-
-        .header-left span.active {
+        
+        .terminal-header span.active {
             color: #ffffff;
             border-bottom: 2px solid var(--accent-color);
         }
 
+        /* PyScript Terminal Styling */
         py-terminal {
             flex: 1;
             padding: 1rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: calc(10px + 1.5vmin); 
-            line-height: 1.4;
+            font-size: 14px;
+            line-height: 1.5;
             overflow-y: auto;
             color: #cccccc;
             background: transparent;
-            width: 100%;
-            box-sizing: border-box;
         }
 
-        /* MOBILE OPTIMIZATIONS */
-        @media screen and (max-width: 768px) {
-            .terminal-header {
-                height: 35px;
-                font-size: 0.7rem;
-            }
-
-            /* PORTRAIT MODE: Half Height & Centered */
-            @media screen and (orientation: portrait) {
-                .terminal-wrapper {
-                    width: 90vw;
-                    height: 50vh; /* Half height */
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%); /* Perfect Center */
-                    border-radius: 12px;
-                    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-                    border: 1px solid #444;
-                }
-
-                py-terminal {
-                    font-size: calc(9px + 1.2vmin); 
-                    padding: 0.5rem;
-                }
-            }
-
-            /* LANDSCAPE MODE */
-            @media screen and (orientation: landscape) {
-                .terminal-wrapper {
-                    width: 95vw;
-                    height: 85vh;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
-                
-                py-terminal {
-                    font-size: calc(11px + 0.8vmin);
-                }
-            }
+        /* Loader */
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #888;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Terminal Container (Visible Immediately) -->
-    <div class="terminal-wrapper" id="terminal-container">
+    <!-- The Centered Terminal Container -->
+    <div class="terminal-wrapper">
         <div class="terminal-header">
-            <div class="header-left">
-                <span class="active">Terminal</span>
-                <span style="color: #666;">JATH.AI</span>
-            </div>
-            <!-- Start Button Removed for immediate execution -->
+            <span class="active">Terminal</span>
+            <span style="margin-left: margin-right; color: #666;">JATH.AI</span>
         </div>
         
+        <div id="loader">AI LOADING......</div>
+        
+        <!-- Terminal Script -->
         <script type="py" src="./Calculator_main.py" terminal worker></script>
     </div>
 
